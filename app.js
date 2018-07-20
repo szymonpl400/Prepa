@@ -17,7 +17,7 @@ const authOptions = {
     json: true
 };
 
-app.use(express.static(__dirname + '/client/dist'));
+app.use(express.static(__dirname + '/dist'));
 
 app.get('/auth', (req, res) => {
     request.post(authOptions, (error, response, body) => {
