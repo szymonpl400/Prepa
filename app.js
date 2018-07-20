@@ -38,5 +38,8 @@ app.get('/auth', (req, res) => {
     });
 });
 
-console.log('Listening on 8888');
+if (!process.env.PORT) {
+    console.log('Listening on 8888');
+}
+
 app.listen(PORT);
