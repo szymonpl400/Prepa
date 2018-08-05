@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { AuthCredentialModel } from './auth-credential.model';
+import { AuthCredential } from '../../interfaces/auth-credential';
 
 @Injectable()
 export class AuthService {
@@ -13,19 +13,16 @@ export class AuthService {
     constructor(private http: HttpClient) { }
 
     private isValidToken(): boolean {
-        return this.getToken() !== null;
+        return !!this.getToken();
     }
 
     private isValidTokenDate(): boolean {
         const expirationDateText = JSON.parse(localStorage.getItem(this.expiresInName));
-
-        if (expirationDateText === null) {
+        if (!expirationDateText) {
             return false;
         }
-
         const expirationDate = new Date(expirationDateText);
         const dateNow = new Date();
-
         return dateNow < expirationDate;
     }
 
@@ -33,16 +30,16 @@ export class AuthService {
         return this.isValidToken() && this.isValidTokenDate();
     }
 
-    authorize(): Observable<AuthCredentialModel> {
+    authorize(): Observable<AuthCredential> {
         return this.http.get('/auth')
             .pipe(map(data => {
             const expiresIn = new Date();
             expiresIn.setSeconds(new Date().getSeconds() + data['expiresIn']);
             return Object.assign({}, data, { expiresIn });
-            })) as Observable<AuthCredentialModel>;
+            })) as Observable<AuthCredential>;
     }
 
-    saveCredential(credential: AuthCredentialModel): void {
+    saveCredential(credential: AuthCredential): void {
         localStorage.setItem(this.accessTokenName, credential.accessToken);
         localStorage.setItem(this.expiresInName, JSON.stringify(credential.expiresIn));
     }

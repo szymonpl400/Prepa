@@ -28,7 +28,7 @@ describe('AuthService', () => {
         expect(service).toBeTruthy();
     });
 
-    describe('#authorize', () => {
+    describe('authorize', () => {
         it('should GET /auth', () => {
             service.authorize().subscribe();
             expect(httpMock.expectOne('/auth').request.method).toBe('GET');
@@ -51,7 +51,7 @@ describe('AuthService', () => {
         });
     });
 
-    describe('#isAuthorized', () => {
+    describe('isAuthorized', () => {
         it('should return false when access_token or expires_in is absent in storage', () => {
             spyOn(localStorage, 'getItem').and.returnValue(null);
             expect(service.isAuthorized()).toBeFalsy();
@@ -102,7 +102,7 @@ describe('AuthService', () => {
         });
     });
 
-    describe('#saveCredential', () => {
+    describe('saveCredential', () => {
         it('should save access token', () => {
             spyOn(localStorage, 'setItem');
             const credential = { success: true, accessToken: 'data', expiresIn: new Date() };
@@ -118,7 +118,7 @@ describe('AuthService', () => {
         });
     });
 
-    describe('#getToken', () => {
+    describe('getToken', () => {
         it('should return token', () => {
             const expected = 'test';
             spyOn(localStorage, 'getItem').and.callFake(key => key === service.accessTokenName ? expected : null);
@@ -126,7 +126,7 @@ describe('AuthService', () => {
         });
     });
 
-    describe('#cleanCredential', () => {
+    describe('cleanCredential', () => {
         it('should remove credentials from storage', () => {
             spyOn(localStorage, 'removeItem');
 

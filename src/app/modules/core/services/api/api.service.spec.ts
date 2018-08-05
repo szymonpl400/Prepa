@@ -1,174 +1,101 @@
 import { TestBed, getTestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { ApiService } from './api.service';
-import { AuthService } from '../auth/auth.service';
-import { AuthServiceMock } from '../auth/auth.service.mock';
-import { AuthQueueService } from '../auth-queue/auth-queue.service';
-import { AuthQueueServiceMock } from '../auth-queue/auth-queue.service.mock';
-import { Observable } from 'rxjs';
+import { HttpMethodFactoryService } from '../http-method-factory/http-method-factory.service';
+import { HttpMethodFactoryServiceMock } from '../../mocks/http-method-factory.service.mock';
+import { ApiAuthorizationService } from '../api-authorization/api-authorization.service';
+import { ApiAuthorizationServiceMock } from '../../mocks/api-authorization.service.mock';
+import { HttpMethodType } from '../../enums/http-method-type';
 
 describe('ApiService', () => {
-    const apiBaseUrl = 'https://api.spotify.com/v1/';
+    let testApiUrl: string;
     let injector: TestBed;
     let service: ApiService;
-    let authService: AuthService;
-    let authQueueService: AuthQueueService;
-    let httpMock: HttpTestingController;
+    let httpMethodFactory: HttpMethodFactoryService;
+    let apiAuthorizationService: ApiAuthorizationService;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule],
             providers: [
                 ApiService,
                 {
-                    provide: AuthService,
-                    useClass: AuthServiceMock
+                    provide: HttpMethodFactoryService,
+                    useClass: HttpMethodFactoryServiceMock
                 },
                 {
-                    provide: AuthQueueService,
-                    useClass: AuthQueueServiceMock
+                    provide: ApiAuthorizationService,
+                    useClass: ApiAuthorizationServiceMock
                 }
             ]
         });
 
         injector = getTestBed();
         service = injector.get(ApiService);
-        authService = injector.get(AuthService);
-        authQueueService = injector.get(AuthQueueService);
-        httpMock = injector.get(HttpTestingController);
-    });
-
-    afterEach(() => {
-        httpMock.verify();
+        httpMethodFactory = injector.get(HttpMethodFactoryService);
+        apiAuthorizationService = injector.get(ApiAuthorizationService);
+        testApiUrl = 'test';
     });
 
     it('should be created', () => {
         expect(service).toBeTruthy();
     });
 
-    describe('#get', () => {
-        it('should call api request when we are authorized', () => {
-            const url = 'testurl';
-            const expected = { test: 'test' };
-            spyOn(authService, 'isAuthorized').and.returnValue(true);
-
-            service.get(url)
-                .subscribe(res => {
-                    expect(res).toEqual(expected);
-                });
-            httpMock.expectOne(apiBaseUrl + url).flush(expected);
+    describe('should create http method', () => {
+        beforeEach(() => {
+            spyOn(httpMethodFactory, 'create');
         });
 
-        it('should authorize if not authorized', () => {
-            spyOn(authService, 'isAuthorized').and.returnValue(false);
-            spyOn(authService, 'authorize').and.returnValue({
-                subscribe() {
-                }
-            });
-
-            service.get('test');
-
-            expect(authService.authorize).toHaveBeenCalled();
+        it('get', () => {
+            service.get(testApiUrl);
+            expect(httpMethodFactory.create).toHaveBeenCalledWith(HttpMethodType.Get);
         });
 
-        it('should add request to que if not authorized', () => {
-            spyOn(authService, 'isAuthorized').and.returnValue(false);
-            spyOn(authService, 'authorize').and.returnValue({
-                subscribe() {
-                }
-            });
-            spyOn(authQueueService, 'addRequest');
-
-            service.get('test');
-
-            expect(authQueueService.addRequest).toHaveBeenCalled();
+        it('post', () => {
+            service.post(testApiUrl);
+            expect(httpMethodFactory.create).toHaveBeenCalledWith(HttpMethodType.Post);
         });
 
-        it('should throw error if authorize is not successful', () => {
-            spyOn(authService, 'isAuthorized').and.returnValue(false);
-            spyOn(authService, 'authorize').and.returnValue({
-                subscribe(callback) {
-                    callback({ success: false });
-                }
-            });
-
-            expect(() => service.get('test')).toThrowError('Authorization failed!');
+        it('put', () => {
+            service.put(testApiUrl);
+            expect(httpMethodFactory.create).toHaveBeenCalledWith(HttpMethodType.Put);
         });
 
-        it('should save credential after succesful authorize', () => {
-            const expectedCall = { success: true };
-            spyOn(authService, 'isAuthorized').and.returnValue(false);
-            spyOn(authService, 'authorize').and.returnValue({
-                subscribe(callback) {
-                     callback(expectedCall);
-                }
-            });
-            spyOn(authService, 'saveCredential');
-            spyOn(authQueueService, 'releaseRequests').and.returnValue([]);
+        it('delete', () => {
+            service.delete(testApiUrl);
+            expect(httpMethodFactory.create).toHaveBeenCalledWith(HttpMethodType.Delete);
+        });
+    });
 
-            service.get('test');
+    describe('should call handle api authorization with base url', () => {
+        let expectedUrl: string;
+        let expectedMethod;
 
-            expect(authService.saveCredential).toHaveBeenCalledWith(expectedCall);
+        beforeEach(() => {
+            expectedUrl = service.API_BASE_URL + testApiUrl;
+            expectedMethod = {};
+
+            spyOn(httpMethodFactory, 'create').and.returnValue(expectedMethod);
+            spyOn(apiAuthorizationService, 'handle');
         });
 
-        it('should emit request for each stopped request', () => {
-            const res = 'test';
-            const template = {
-                source: {
-                    next(val) {
-                    }
-                },
-                apiRequest() {
-                    return {
-                        subscribe(callback) {
-                            callback(res);
-                        }
-                    };
-                }
-            };
-            const requests = [
-                Object.assign({}, template),
-                Object.assign({}, template),
-                Object.assign({}, template)
-            ];
-            spyOn(authService, 'isAuthorized').and.returnValue(false);
-            spyOn(authService, 'authorize').and.returnValue({
-                subscribe(callback) {
-                     callback({ success: true });
-                }
-            });
-            spyOn(authQueueService, 'releaseRequests').and.returnValue(requests);
-            spyOn(template.source, 'next');
-
-            service.get('test');
-
-            requests.forEach(request => {
-                expect(request.source.next).toHaveBeenCalledWith(res);
-            });
+        it('get', () => {
+            service.get(testApiUrl);
+            expect(apiAuthorizationService.handle).toHaveBeenCalledWith(expectedMethod, expectedUrl, {});
         });
 
-        it('should not call authorize when it is already called', () => {
-            spyOn(authService, 'isAuthorized').and.returnValue(false);
-            spyOn(authService, 'authorize').and.returnValue({
-                subscribe() {
-                }
-            });
-
-            service.get('test');
-            service.get('test');
-
-            expect(authService.authorize).toHaveBeenCalledTimes(1);
+        it('post', () => {
+            service.post(testApiUrl);
+            expect(apiAuthorizationService.handle).toHaveBeenCalledWith(expectedMethod, expectedUrl, {});
         });
 
-        it('should return observable when not authorized', () => {
-            spyOn(authService, 'isAuthorized').and.returnValue(false);
-            spyOn(authService, 'authorize').and.returnValue({
-                subscribe() {
-                }
-            });
+        it('put', () => {
+            service.put(testApiUrl);
+            expect(apiAuthorizationService.handle).toHaveBeenCalledWith(expectedMethod, expectedUrl, {});
+        });
 
-            expect(service.get('test') instanceof Observable).toBeTruthy();
+        it('delete', () => {
+            service.delete(testApiUrl);
+            expect(apiAuthorizationService.handle).toHaveBeenCalledWith(expectedMethod, expectedUrl, {});
         });
     });
 });

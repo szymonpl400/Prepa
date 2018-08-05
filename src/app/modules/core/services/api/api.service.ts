@@ -1,69 +1,46 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 
-import { AuthService } from '../../services/auth/auth.service';
-import { AuthCredentialModel } from '../auth/auth-credential.model';
-import { AuthQueueService } from '../auth-queue/auth-queue.service';
-import { AuthQueueRequestModel } from '../auth-queue/auth-queue-request.model';
+import { HttpMethodFactoryService } from '../http-method-factory/http-method-factory.service';
+import { HttpMethodType } from '../../enums/http-method-type';
+import { ApiAuthorizationService } from '../api-authorization/api-authorization.service';
+import { HttpOptions } from '../../interfaces/http-options';
+import { HttpMethod } from '../../interfaces/http-method';
 
 @Injectable()
 export class ApiService {
-    private readonly apiBaseUrl = 'https://api.spotify.com/v1/';
-    private isAuthRequestSent = false;
+    readonly API_BASE_URL = 'https://api.spotify.com/v1/';
 
     constructor(
-        private httpClient: HttpClient,
-        private authService: AuthService,
-        private authQueueService: AuthQueueService) { }
+        private httpMethodFactory: HttpMethodFactoryService,
+        private apiAuthorization: ApiAuthorizationService) { }
 
-    get<T>(url: string): Observable<T> {
-        return this.handleApiAuthorization(
-            () => this.httpClient.get(this.apiBaseUrl + url, this.getHttpOptions())
-        );
+    get<T>(url: string, options: HttpOptions = {}): Observable<T> {
+        const method = this.httpMethodFactory.create(HttpMethodType.Get);
+        return this.handleApiAuthorization(method, url, options);
     }
 
-    private handleApiAuthorization(apiRequest: () => Observable<any>): Observable<any> {
-        if (this.authService.isAuthorized()) {
-            return apiRequest();
-        }
-        const request = {
-            source: new Subject,
-            apiRequest
-        };
-        this.authQueueService.addRequest(request);
-        if (!this.isAuthRequestSent) {
-            this.authorize();
-        }
-        return request.source.asObservable();
+    post<T>(url: string, options: HttpOptions = {}): Observable<T> {
+        const method = this.httpMethodFactory.create(HttpMethodType.Post);
+        return this.handleApiAuthorization(method, url, options);
     }
 
-    private authorize(): void {
-        this.isAuthRequestSent = true;
-        this.authService.authorize()
-            .subscribe((authCredential: AuthCredentialModel) => {
-                this.isAuthRequestSent = false;
-
-                if (!authCredential.success) {
-                    throw new Error('Authorization failed!');
-                }
-
-                this.authService.saveCredential(authCredential);
-
-                this.authQueueService.releaseRequests().forEach((req: AuthQueueRequestModel) => {
-                    req.apiRequest()
-                        .subscribe((result) => {
-                            req.source.next(result);
-                        });
-                });
-            });
+    put<T>(url: string, options: HttpOptions = {}): Observable<T> {
+        const method = this.httpMethodFactory.create(HttpMethodType.Put);
+        return this.handleApiAuthorization(method, url, options);
     }
 
-    private getHttpOptions() {
-        return {
-            headers: new HttpHeaders({
-                'Authorization': 'Bearer ' + this.authService.getToken()
-            })
-        };
+    delete<T>(url: string, options: HttpOptions = {}): Observable<T> {
+        const method = this.httpMethodFactory.create(HttpMethodType.Delete);
+        return this.handleApiAuthorization(method, url, options);
+    }
+
+    private handleApiAuthorization<T>(method: HttpMethod, url: string, options: HttpOptions): Observable<T> {
+        const urlWithBaseUrl = this.addApiBaseUrl(url);
+        return this.apiAuthorization.handle(method, urlWithBaseUrl, options);
+    }
+
+    private addApiBaseUrl(url: string): string {
+        return this.API_BASE_URL + url;
     }
 }
