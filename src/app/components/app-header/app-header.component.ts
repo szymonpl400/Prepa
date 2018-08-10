@@ -16,6 +16,6 @@ export class AppHeaderComponent {
     }
 
     toggleMenu() {
-        this.navigationManager.openedChange.emit(undefined);
+        this.navigationManager.toggle.emit();
     }
 }

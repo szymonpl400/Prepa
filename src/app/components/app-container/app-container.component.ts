@@ -14,8 +14,8 @@ export class AppContainerComponent {
     sidenav: MatSidenav;
 
     constructor(navigationManager: NavigationManagerService) {
-        navigationManager.openedChange.subscribe((isOpen: boolean) => {
-            this.sidenav.toggle(isOpen);
+        navigationManager.toggle.subscribe(() => {
+            this.sidenav.toggle();
         });
     }
 }
