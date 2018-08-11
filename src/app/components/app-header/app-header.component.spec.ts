@@ -4,7 +4,7 @@ import { By } from '@angular/platform-browser';
 
 import { AppHeaderComponent } from './app-header.component';
 import { NavigationManagerService } from '../../services/navigation-manager.service';
-import { NavigationManagerServiceMock } from '../../mocks/navigation-manager.service.mock';
+import { NavigationManagerServiceMock } from '../../services/navigation-manager.service.mock';
 
 describe('AppHeaderComponent', () => {
   let component: AppHeaderComponent;

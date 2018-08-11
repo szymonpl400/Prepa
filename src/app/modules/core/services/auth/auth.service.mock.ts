@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { AuthCredential } from '../interfaces/auth-credential';
+import { AuthCredential } from '../../interfaces/auth-credential';
 
 export class AuthServiceMock {
     isAuthorized(): boolean {

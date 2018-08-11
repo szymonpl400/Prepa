@@ -2,9 +2,9 @@ import { TestBed, getTestBed } from '@angular/core/testing';
 
 import { ApiService } from './api.service';
 import { HttpMethodFactoryService } from '../http-method-factory/http-method-factory.service';
-import { HttpMethodFactoryServiceMock } from '../../mocks/http-method-factory.service.mock';
+import { HttpMethodFactoryServiceMock } from '../http-method-factory/http-method-factory.service.mock';
 import { ApiAuthorizationService } from '../api-authorization/api-authorization.service';
-import { ApiAuthorizationServiceMock } from '../../mocks/api-authorization.service.mock';
+import { ApiAuthorizationServiceMock } from '../api-authorization/api-authorization.service.mock';
 import { HttpMethodType } from '../../enums/http-method-type';
 
 describe('ApiService', () => {

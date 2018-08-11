@@ -2,13 +2,13 @@ import { TestBed, getTestBed } from '@angular/core/testing';
 
 import { HttpMethodFactoryService } from './http-method-factory.service';
 import { HttpGetService } from '../http-get/http-get.service';
-import { HttpGetServiceMock } from '../../mocks/http-get.service.mock';
+import { HttpGetServiceMock } from '../http-get/http-get.service.mock';
 import { HttpPostService } from '../http-post/http-post.service';
-import { HttpPostServiceMock } from '../../mocks/http-post.service.mock';
+import { HttpPostServiceMock } from '../http-post/http-post.service.mock';
 import { HttpPutService } from '../http-put/http-put.service';
-import { HttpPutServiceMock } from '../../mocks/http-put.service.mock';
+import { HttpPutServiceMock } from '../http-put/http-put.service.mock';
 import { HttpDeleteService } from '../http-delete/http-delete.service';
-import { HttpDeleteServiceMock } from '../../mocks/http-delete.service.mock';
+import { HttpDeleteServiceMock } from '../http-delete/http-delete.service.mock';
 import { HttpMethodType } from '../../enums/http-method-type';
 
 describe('HttpMethodFactoryService', () => {

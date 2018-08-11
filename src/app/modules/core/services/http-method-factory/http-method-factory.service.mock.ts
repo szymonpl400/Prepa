@@ -1,9 +1,9 @@
-import { HttpMethod } from '../interfaces/http-method';
-import { HttpMethodType } from '../enums/http-method-type';
-import { HttpGetServiceMock } from './http-get.service.mock';
-import { HttpPostServiceMock } from './http-post.service.mock';
-import { HttpPutServiceMock } from './http-put.service.mock';
-import { HttpDeleteServiceMock } from './http-delete.service.mock';
+import { HttpMethod } from '../../interfaces/http-method';
+import { HttpMethodType } from '../../enums/http-method-type';
+import { HttpGetServiceMock } from '../http-get/http-get.service.mock';
+import { HttpPostServiceMock } from '../http-post/http-post.service.mock';
+import { HttpPutServiceMock } from '../http-put/http-put.service.mock';
+import { HttpDeleteServiceMock } from '../http-delete/http-delete.service.mock';
 
 export class HttpMethodFactoryServiceMock {
     private static readonly httpGet = new HttpGetServiceMock;

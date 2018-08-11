@@ -3,10 +3,10 @@ import { Observable, Subject, of } from 'rxjs';
 
 import { ApiAuthorizationService } from './api-authorization.service';
 import { AuthService } from '../auth/auth.service';
-import { AuthServiceMock } from '../../mocks/auth.service.mock';
+import { AuthServiceMock } from '../auth/auth.service.mock';
 import { AuthQueueService } from '../auth-queue/auth-queue.service';
-import { AuthQueueServiceMock } from '../../mocks/auth-queue.service.mock';
-import { HttpGetServiceMock } from '../../mocks/http-get.service.mock';
+import { AuthQueueServiceMock } from '../auth-queue/auth-queue.service.mock';
+import { HttpGetServiceMock } from '../http-get/http-get.service.mock';
 import { HttpOptions } from '../../interfaces/http-options';
 import { HttpMethod } from '../../interfaces/http-method';
 import { AuthQueueRequest } from '../../interfaces/auth-queue-request';

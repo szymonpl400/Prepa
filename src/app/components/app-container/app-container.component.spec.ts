@@ -4,7 +4,7 @@ import { async, ComponentFixture, TestBed, getTestBed } from '@angular/core/test
 
 import { AppContainerComponent } from './app-container.component';
 import { NavigationManagerService } from '../../services/navigation-manager.service';
-import { NavigationManagerServiceMock } from '../../mocks/navigation-manager.service.mock';
+import { NavigationManagerServiceMock } from '../../services/navigation-manager.service.mock';
 import { MaterialModule } from '../../modules/material/material.module';
 
 describe('AppContainerComponent', () => {
