@@ -7,7 +7,7 @@ import { HttpPutService } from './http-put.service';
 describe('HttpPutService', () => {
     let injector: TestBed;
     let service: HttpPutService;
-    let httpClient: HttpClient;
+    let httpClient;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -17,8 +17,7 @@ describe('HttpPutService', () => {
                 {
                     provide: HttpClient,
                     useFactory: () => {
-                        httpClient = jasmine.createSpyObj('HttpClient', ['put']);
-                        return httpClient;
+                        return jasmine.createSpyObj('HttpClient', ['put']);
                     }
                 }
             ]
@@ -26,6 +25,7 @@ describe('HttpPutService', () => {
 
         injector = getTestBed();
         service = injector.get(HttpPutService);
+        httpClient = injector.get(HttpClient);
     });
 
     it('should be created', () => {

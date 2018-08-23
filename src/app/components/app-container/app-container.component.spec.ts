@@ -3,14 +3,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { async, ComponentFixture, TestBed, getTestBed } from '@angular/core/testing';
 
 import { AppContainerComponent } from './app-container.component';
-import { NavigationManagerService } from '../../services/navigation-manager.service';
-import { NavigationManagerServiceMock } from '../../services/navigation-manager.service.mock';
+import { NavigationManagerService, NavigationManagerServiceMock } from '../../modules/shared/shared.module';
 import { MaterialModule } from '../../modules/material/material.module';
 
 describe('AppContainerComponent', () => {
     let component: AppContainerComponent;
     let fixture: ComponentFixture<AppContainerComponent>;
-    let navigationManagerService: NavigationManagerService;
+    let navigationManagerService: NavigationManagerServiceMock;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { AuthService } from './services/auth/auth.service';
 import { ApiService } from './services/api/api.service';
+import { ApiServiceMock } from './services/api/api.service.mock';
 import { AuthQueueService } from './services/auth-queue/auth-queue.service';
 import { HttpGetService } from './services/http-get/http-get.service';
 import { HttpPostService } from './services/http-post/http-post.service';
@@ -29,3 +30,6 @@ import { ApiAuthorizationService } from './services/api-authorization/api-author
   ]
 })
 export class CoreModule { }
+
+export { ApiService } from './services/api/api.service';
+export { ApiServiceMock } from './services/api/api.service.mock';

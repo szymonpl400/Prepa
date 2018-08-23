@@ -11,8 +11,8 @@ describe('ApiService', () => {
     let testApiUrl: string;
     let injector: TestBed;
     let service: ApiService;
-    let httpMethodFactory: HttpMethodFactoryService;
-    let apiAuthorizationService: ApiAuthorizationService;
+    let httpMethodFactory: HttpMethodFactoryServiceMock;
+    let apiAuthorizationService: ApiAuthorizationServiceMock;
 
     beforeEach(() => {
         TestBed.configureTestingModule({

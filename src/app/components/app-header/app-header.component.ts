@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material';
 
-import { NavigationManagerService } from '../../services/navigation-manager.service';
+import { NavigationManagerService } from '../../modules/shared/shared.module';
 
 @Component({
   selector: 'prp-app-header',

@@ -7,7 +7,7 @@ import { HttpDeleteService } from './http-delete.service';
 describe('HttpDeleteService', () => {
     let injector: TestBed;
     let service: HttpDeleteService;
-    let httpClient: HttpClient;
+    let httpClient;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -17,8 +17,7 @@ describe('HttpDeleteService', () => {
                 {
                     provide: HttpClient,
                     useFactory: () => {
-                        httpClient = jasmine.createSpyObj('HttpClient', ['delete']);
-                        return httpClient;
+                        return jasmine.createSpyObj('HttpClient', ['delete']);
                     }
                 }
             ]
@@ -26,6 +25,7 @@ describe('HttpDeleteService', () => {
 
         injector = getTestBed();
         service = injector.get(HttpDeleteService);
+        httpClient = injector.get(HttpClient);
     });
 
     it('should be created', () => {

@@ -7,7 +7,7 @@ import { HttpPostService } from './http-post.service';
 describe('HttpPostService', () => {
     let injector: TestBed;
     let service: HttpPostService;
-    let httpClient: HttpClient;
+    let httpClient;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -17,8 +17,7 @@ describe('HttpPostService', () => {
                 {
                     provide: HttpClient,
                     useFactory: () => {
-                        httpClient = jasmine.createSpyObj('HttpClient', ['post']);
-                        return httpClient;
+                        return jasmine.createSpyObj('HttpClient', ['post']);
                     }
                 }
             ]
@@ -26,6 +25,7 @@ describe('HttpPostService', () => {
 
         injector = getTestBed();
         service = injector.get(HttpPostService);
+        httpClient = injector.get(HttpClient);
     });
 
     it('should be created', () => {

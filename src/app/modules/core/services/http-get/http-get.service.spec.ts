@@ -7,7 +7,7 @@ import { HttpGetService } from './http-get.service';
 describe('HttpGetService', () => {
     let injector: TestBed;
     let service: HttpGetService;
-    let httpClient: HttpClient;
+    let httpClient;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -17,8 +17,7 @@ describe('HttpGetService', () => {
                 {
                     provide: HttpClient,
                     useFactory: () => {
-                        httpClient = jasmine.createSpyObj('HttpClient', ['get']);
-                        return httpClient;
+                        return jasmine.createSpyObj('HttpClient', ['get']);
                     }
                 }
             ]
@@ -26,6 +25,7 @@ describe('HttpGetService', () => {
 
         injector = getTestBed();
         service = injector.get(HttpGetService);
+        httpClient = injector.get(HttpClient);
     });
 
     it('should be created', () => {

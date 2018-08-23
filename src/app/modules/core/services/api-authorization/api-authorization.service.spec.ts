@@ -15,8 +15,8 @@ import { AuthQueueRequest } from '../../interfaces/auth-queue-request';
 describe('ApiAuthorizationService', () => {
     let injector: TestBed;
     let service: ApiAuthorizationService;
-    let authService: AuthService;
-    let authQueueService: AuthQueueService;
+    let authService: AuthServiceMock;
+    let authQueueService: AuthQueueServiceMock;
 
     beforeEach(() => {
         TestBed.configureTestingModule({

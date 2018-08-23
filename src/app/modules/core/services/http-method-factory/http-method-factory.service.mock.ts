@@ -1,3 +1,5 @@
+import { Injectable } from '@angular/core';
+
 import { HttpMethod } from '../../interfaces/http-method';
 import { HttpMethodType } from '../../enums/http-method-type';
 import { HttpGetServiceMock } from '../http-get/http-get.service.mock';
@@ -5,6 +7,7 @@ import { HttpPostServiceMock } from '../http-post/http-post.service.mock';
 import { HttpPutServiceMock } from '../http-put/http-put.service.mock';
 import { HttpDeleteServiceMock } from '../http-delete/http-delete.service.mock';
 
+@Injectable()
 export class HttpMethodFactoryServiceMock {
     private static readonly httpGet = new HttpGetServiceMock;
     private static readonly httpPost = new HttpPostServiceMock;

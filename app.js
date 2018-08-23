@@ -5,6 +5,7 @@ const app = express();
 const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
 const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
 const PORT = process.env.PORT || 8888;
+const appDirectoryName = __dirname + '/dist';
 
 const authOptions = {
     url: 'https://accounts.spotify.com/api/token',
@@ -17,7 +18,7 @@ const authOptions = {
     json: true
 };
 
-app.use(express.static(__dirname + '/dist'));
+app.use(express.static(appDirectoryName));
 
 app.get('/auth', (req, res) => {
     request.post(authOptions, (error, response, body) => {
@@ -36,6 +37,10 @@ app.get('/auth', (req, res) => {
             });
         }
     });
+});
+
+app.all('*', (req, res) => {
+    return res.sendFile(`${appDirectoryName}/index.html`);
 });
 
 if (!process.env.PORT) {

@@ -3,13 +3,12 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
 import { AppHeaderComponent } from './app-header.component';
-import { NavigationManagerService } from '../../services/navigation-manager.service';
-import { NavigationManagerServiceMock } from '../../services/navigation-manager.service.mock';
+import { NavigationManagerService, NavigationManagerServiceMock } from '../../modules/shared/shared.module';
 
 describe('AppHeaderComponent', () => {
   let component: AppHeaderComponent;
   let fixture: ComponentFixture<AppHeaderComponent>;
-  let navigationManagerService: NavigationManagerService;
+  let navigationManagerService: NavigationManagerServiceMock;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({

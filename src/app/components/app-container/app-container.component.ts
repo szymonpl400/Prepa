@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material';
 
-import { NavigationManagerService } from '../../services/navigation-manager.service';
+import { NavigationManagerService } from '../../modules/shared/shared.module';
 
 @Component({
   selector: 'prp-app-container',

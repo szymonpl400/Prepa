@@ -1,8 +1,8 @@
 import { TestBed, getTestBed } from '@angular/core/testing';
-import { HttpGetServiceMock } from '../http-get/http-get.service.mock';
-
-import { AuthQueueService } from './auth-queue.service';
 import { Subject } from 'rxjs';
+
+import { HttpGetServiceMock } from '../http-get/http-get.service.mock';
+import { AuthQueueService } from './auth-queue.service';
 import { AuthQueueRequest } from '../../interfaces/auth-queue-request';
 
 describe('AuthQueueService', () => {
