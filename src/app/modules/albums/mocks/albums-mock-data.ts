@@ -1,11 +1,8 @@
-import { Injectable } from '@angular/core';
-
 import { Album } from '../interfaces/album';
 import { Paging } from '../../shared/shared.module';
 
-@Injectable()
 export class AlbumsMockData {
-    getAlbums(): Album[] {
+    static getAlbums(): Album[] {
         return [
             {
                 album_type: 'album',
@@ -37,10 +34,10 @@ export class AlbumsMockData {
         ];
     }
 
-    getAlbumsWithPaging(): Paging<Album> {
+    static getAlbumsWithPaging(): Paging<Album> {
         return {
             href: 'https://api.spotify.com/v1/artists/1vCWHaC5f2uS3yhpwWbIA6/albums?offset=0&limit=2&include_groups=appears_on&market=ES',
-            items: this.getAlbums(),
+            items: AlbumsMockData.getAlbums(),
             limit: 2,
             next: 'https://api.spotify.com/v1/artists/1vCWHaC5f2uS3yhpwWbIA6/albums?offset=2&limit=2&include_groups=appears_on&market=ES',
             offset: 0,

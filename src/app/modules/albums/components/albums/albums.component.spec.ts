@@ -1,14 +1,14 @@
 import { async, ComponentFixture, TestBed, getTestBed } from '@angular/core/testing';
+import { of } from 'rxjs';
 
 import { AlbumsComponent } from './albums.component';
 import { AlbumsRepositoryService } from '../../services/albums-repository/albums-repository.service';
-import { AlbumsRepositoryServiceMock } from '../../services/albums-repository/albums-repository.service.mock';
 import { AlbumsMockData } from '../../mocks/albums-mock-data';
 
 describe('AlbumsComponent', () => {
     let component: AlbumsComponent;
     let fixture: ComponentFixture<AlbumsComponent>;
-    let albumsRepositoryService: AlbumsRepositoryServiceMock;
+    let albumsRepositoryService: jasmine.SpyObj<AlbumsRepositoryService>;
     let ngOnInit: () => void;
 
     beforeEach(async(() => {
@@ -17,7 +17,9 @@ describe('AlbumsComponent', () => {
             providers: [
                 {
                     provide: AlbumsRepositoryService,
-                    useClass: AlbumsRepositoryServiceMock
+                    useFactory: () => (
+                        jasmine.createSpyObj('AlbumsRepositoryService', ['getNewReleases'])
+                    )
                 }
             ]
         })
@@ -42,16 +44,18 @@ describe('AlbumsComponent', () => {
     });
 
     describe('ngOnInit', () => {
+        beforeEach(() => {
+            albumsRepositoryService.getNewReleases.and.returnValue(of({ albums: AlbumsMockData.getAlbumsWithPaging() }));
+        });
+
         it('should call getNewReleases', () => {
-            spyOn(albumsRepositoryService, 'getNewReleases').and.callThrough();
             ngOnInit();
             expect(albumsRepositoryService.getNewReleases).toHaveBeenCalled();
         });
 
         it('should assign response albums to albums array', () => {
-            const albumsMockData = new AlbumsMockData;
             ngOnInit();
-            expect(component.albums).toEqual(albumsMockData.getAlbums());
+            expect(component.albums).toEqual(AlbumsMockData.getAlbums());
         });
     });
 });

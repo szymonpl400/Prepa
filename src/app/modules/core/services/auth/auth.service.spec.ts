@@ -3,21 +3,38 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { Observable } from 'rxjs';
 
 import { AuthService } from './auth.service';
+import { DateHelperService, TypeHelperService } from '../../../shared/shared.module';
 
 describe('AuthService', () => {
     let injector: TestBed;
     let service: AuthService;
     let httpMock: HttpTestingController;
+    let typeHelper: jasmine.SpyObj<TypeHelperService>;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule],
-            providers: [AuthService]
+            providers: [
+                AuthService,
+                {
+                    provide: DateHelperService,
+                    useFactory: () => (
+                        jasmine.createSpyObj('DateHelperService', ['secondsToMiliseconds'])
+                    )
+                },
+                {
+                    provide: TypeHelperService,
+                    useFactory: () => (
+                        jasmine.createSpyObj('TypeHelperService', ['isNumber'])
+                    )
+                }
+            ]
         });
 
         injector = getTestBed();
         service = injector.get(AuthService);
         httpMock = injector.get(HttpTestingController);
+        typeHelper = injector.get(TypeHelperService);
     });
 
     afterEach(() => {
@@ -37,18 +54,6 @@ describe('AuthService', () => {
         it('should return Observable', () => {
             expect(service.authorize() instanceof Observable).toBeTruthy();
         });
-
-        it('should map expiresIn time to date', () => {
-            service.authorize().subscribe(credential => {
-                expect(credential.expiresIn instanceof Date).toBeTruthy();
-            });
-
-            httpMock.expectOne('/auth').flush({
-                success: true,
-                accessToken: 'token',
-                expiresIn: 3600
-            });
-        });
     });
 
     describe('isAuthorized', () => {
@@ -58,6 +63,7 @@ describe('AuthService', () => {
         });
 
         it('should return false when access_token is valid and expires_in is absent', () => {
+            typeHelper.isNumber.and.returnValue(false);
             spyOn(localStorage, 'getItem').and.callFake((key) => {
                 switch (key) {
                     case service.accessTokenName:
@@ -88,6 +94,7 @@ describe('AuthService', () => {
 
         it('should return true when access_token is present and expires_in is valid', () => {
             const tommorow = new Date().setDate(new Date().getDate() + 1);
+            typeHelper.isNumber.and.returnValue(true);
             spyOn(localStorage, 'getItem').and.callFake((key) => {
                 switch (key) {
                     case service.accessTokenName:
@@ -105,15 +112,15 @@ describe('AuthService', () => {
     describe('saveCredential', () => {
         it('should save access token', () => {
             spyOn(localStorage, 'setItem');
-            const credential = { success: true, accessToken: 'data', expiresIn: new Date() };
-            service.saveCredential(credential);
+            const credential = { success: true, accessToken: 'data', expiresIn: Date.now() };
+            service.saveCredentials(credential);
             expect(localStorage.setItem).toHaveBeenCalledWith(service.accessTokenName, credential.accessToken);
         });
 
         it('should save expires in', () => {
             spyOn(localStorage, 'setItem');
-            const credential = { success: true, accessToken: 'data', expiresIn: new Date() };
-            service.saveCredential(credential);
+            const credential = { success: true, accessToken: 'data', expiresIn: Date.now() };
+            service.saveCredentials(credential);
             expect(localStorage.setItem).toHaveBeenCalledWith(service.expiresInName, JSON.stringify(credential.expiresIn));
         });
     });
@@ -126,11 +133,11 @@ describe('AuthService', () => {
         });
     });
 
-    describe('cleanCredential', () => {
+    describe('clearCredentials', () => {
         it('should remove credentials from storage', () => {
             spyOn(localStorage, 'removeItem');
 
-            service.cleanCredential();
+            service.clearCredentials();
 
             expect(localStorage.removeItem).toHaveBeenCalledWith('access_token');
             expect(localStorage.removeItem).toHaveBeenCalledWith('expires_in');

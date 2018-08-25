@@ -1,27 +1,37 @@
 import { TestBed, getTestBed } from '@angular/core/testing';
 import { Subject } from 'rxjs';
 
-import { HttpGetServiceMock } from '../http-get/http-get.service.mock';
+import { HttpGetService } from '../http-get/http-get.service';
 import { AuthQueueService } from './auth-queue.service';
 import { AuthQueueRequest } from '../../interfaces/auth-queue-request';
 
 describe('AuthQueueService', () => {
     let injector: TestBed;
     let service: AuthQueueService;
-    let testRequest: AuthQueueRequest;
+    let queueRequest: AuthQueueRequest;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            providers: [AuthQueueService]
+            providers: [
+                AuthQueueService,
+                {
+                    provide: HttpGetService,
+                    useFactory: () => (
+                        jasmine.createSpyObj('HttpGetService', ['request'])
+                    )
+                }
+            ]
         });
 
         injector = getTestBed();
         service = injector.get(AuthQueueService);
-        testRequest = {
+        const httpMethod = injector.get(HttpGetService);
+
+        queueRequest = {
             source: new Subject,
             url: 'test',
             options: {},
-            httpMethod: new HttpGetServiceMock
+            httpMethod
         };
     });
 
@@ -31,14 +41,14 @@ describe('AuthQueueService', () => {
 
     describe('add request', () => {
         it('should add request', () => {
-            service.addRequest(testRequest);
-            expect(service.releaseRequests()).toEqual([testRequest]);
+            service.addRequest(queueRequest);
+            expect(service.releaseRequests()).toEqual([queueRequest]);
         });
     });
 
     describe('releaseRequests', () => {
         it('should delete all requests', () => {
-            service.addRequest(testRequest);
+            service.addRequest(queueRequest);
             service.releaseRequests();
             expect(service.releaseRequests()).toEqual([]);
         });
@@ -46,8 +56,8 @@ describe('AuthQueueService', () => {
 
     describe('createRequest', () => {
         it('should create new request', () => {
-            const result = service.createRequest(testRequest.httpMethod, testRequest.url, testRequest.options);
-            expect(result).toEqual(testRequest);
+            const result = service.createRequest(queueRequest.httpMethod, queueRequest.url, queueRequest.options);
+            expect(result).toEqual(queueRequest);
         });
     });
 });

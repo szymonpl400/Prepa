@@ -4,52 +4,55 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { AuthCredential } from '../../interfaces/auth-credential';
+import { DateHelperService, TypeHelperService } from '../../../shared/shared.module';
 
 @Injectable()
 export class AuthService {
     readonly accessTokenName = 'access_token';
     readonly expiresInName = 'expires_in';
 
-    constructor(private http: HttpClient) { }
-
-    private isValidToken(): boolean {
-        return !!this.getToken();
-    }
-
-    private isValidTokenDate(): boolean {
-        const expirationDateText = JSON.parse(localStorage.getItem(this.expiresInName));
-        if (!expirationDateText) {
-            return false;
-        }
-        const expirationDate = new Date(expirationDateText);
-        const dateNow = new Date();
-        return dateNow < expirationDate;
-    }
+    constructor(
+        private http: HttpClient,
+        private dateHelper: DateHelperService,
+        private typeHelper: TypeHelperService
+    ) { }
 
     isAuthorized(): boolean {
-        return this.isValidToken() && this.isValidTokenDate();
+        return this.isValidToken() && !this.tokenExpired();
     }
 
     authorize(): Observable<AuthCredential> {
-        return this.http.get('/auth')
-            .pipe(map(data => {
-            const expiresIn = new Date();
-            expiresIn.setSeconds(new Date().getSeconds() + data['expiresIn']);
-            return Object.assign({}, data, { expiresIn });
-            })) as Observable<AuthCredential>;
+        return this.http.get('/auth').pipe(
+            map((data: AuthCredential) => {
+                const expiresIn = Date.now() + this.dateHelper.secondsToMiliseconds(data.expiresIn);
+                return Object.assign({}, data, { expiresIn });
+            })
+        );
     }
 
-    saveCredential(credential: AuthCredential): void {
+    saveCredentials(credential: AuthCredential): void {
         localStorage.setItem(this.accessTokenName, credential.accessToken);
         localStorage.setItem(this.expiresInName, JSON.stringify(credential.expiresIn));
     }
 
-    cleanCredential(): void {
+    clearCredentials(): void {
         localStorage.removeItem(this.accessTokenName);
         localStorage.removeItem(this.expiresInName);
     }
 
     getToken(): string {
         return localStorage.getItem(this.accessTokenName);
+    }
+
+    private isValidToken(): boolean {
+        return !!this.getToken();
+    }
+
+    private tokenExpired(): boolean {
+        const expiresIn: number = JSON.parse(localStorage.getItem(this.expiresInName));
+        if (!this.typeHelper.isNumber(expiresIn)) {
+            return true;
+        }
+        return Date.now() > expiresIn;
     }
 }

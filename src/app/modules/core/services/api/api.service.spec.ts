@@ -2,17 +2,15 @@ import { TestBed, getTestBed } from '@angular/core/testing';
 
 import { ApiService } from './api.service';
 import { HttpMethodFactoryService } from '../http-method-factory/http-method-factory.service';
-import { HttpMethodFactoryServiceMock } from '../http-method-factory/http-method-factory.service.mock';
 import { ApiAuthorizationService } from '../api-authorization/api-authorization.service';
-import { ApiAuthorizationServiceMock } from '../api-authorization/api-authorization.service.mock';
 import { HttpMethodType } from '../../enums/http-method-type';
 
 describe('ApiService', () => {
     let testApiUrl: string;
     let injector: TestBed;
     let service: ApiService;
-    let httpMethodFactory: HttpMethodFactoryServiceMock;
-    let apiAuthorizationService: ApiAuthorizationServiceMock;
+    let httpMethodFactory: jasmine.SpyObj<HttpMethodFactoryService>;
+    let apiAuthorizationService: jasmine.SpyObj<ApiAuthorizationService>;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -20,11 +18,15 @@ describe('ApiService', () => {
                 ApiService,
                 {
                     provide: HttpMethodFactoryService,
-                    useClass: HttpMethodFactoryServiceMock
+                    useFactory: () => (
+                        jasmine.createSpyObj('HttpMethodFactoryService', ['create'])
+                    )
                 },
                 {
                     provide: ApiAuthorizationService,
-                    useClass: ApiAuthorizationServiceMock
+                    useFactory: () => (
+                        jasmine.createSpyObj('ApiAuthorizationService', ['handle'])
+                    )
                 }
             ]
         });
@@ -41,10 +43,6 @@ describe('ApiService', () => {
     });
 
     describe('should create http method', () => {
-        beforeEach(() => {
-            spyOn(httpMethodFactory, 'create');
-        });
-
         it('get', () => {
             service.get(testApiUrl);
             expect(httpMethodFactory.create).toHaveBeenCalledWith(HttpMethodType.Get);
@@ -74,8 +72,7 @@ describe('ApiService', () => {
             expectedUrl = service.API_BASE_URL + testApiUrl;
             expectedMethod = {};
 
-            spyOn(httpMethodFactory, 'create').and.returnValue(expectedMethod);
-            spyOn(apiAuthorizationService, 'handle');
+            httpMethodFactory.create.and.returnValue(expectedMethod);
         });
 
         it('get', () => {

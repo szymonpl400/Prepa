@@ -34,7 +34,7 @@ export class ApiAuthorizationService {
                     if (!authCredential.success) {
                         throw new Error('Authorization failed!');
                     }
-                    this.authService.saveCredential(authCredential);
+                    this.authService.saveCredentials(authCredential);
                     return authCredential;
                 })
             );

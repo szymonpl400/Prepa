@@ -3,32 +3,39 @@ import { Observable, Subject, of } from 'rxjs';
 
 import { ApiAuthorizationService } from './api-authorization.service';
 import { AuthService } from '../auth/auth.service';
-import { AuthServiceMock } from '../auth/auth.service.mock';
+import { HttpGetService } from '../http-get/http-get.service';
 import { AuthQueueService } from '../auth-queue/auth-queue.service';
-import { AuthQueueServiceMock } from '../auth-queue/auth-queue.service.mock';
-import { HttpGetServiceMock } from '../http-get/http-get.service.mock';
 import { HttpOptions } from '../../interfaces/http-options';
-import { HttpMethod } from '../../interfaces/http-method';
 import { AuthQueueRequest } from '../../interfaces/auth-queue-request';
-
 
 describe('ApiAuthorizationService', () => {
     let injector: TestBed;
     let service: ApiAuthorizationService;
-    let authService: AuthServiceMock;
-    let authQueueService: AuthQueueServiceMock;
+    let authService: jasmine.SpyObj<AuthService>;
+    let authQueueService: jasmine.SpyObj<AuthQueueService>;
+    let httpMethod: jasmine.SpyObj<HttpGetService>;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
             providers: [
                 ApiAuthorizationService,
                 {
+                    provide: HttpGetService,
+                    useFactory: () => (
+                        jasmine.createSpyObj('HttpGetService', ['request'])
+                    )
+                },
+                {
                     provide: AuthService,
-                    useClass: AuthServiceMock
+                    useFactory: () => (
+                        jasmine.createSpyObj('AuthService', ['getToken', 'isAuthorized', 'authorize', 'saveCredentials'])
+                    )
                 },
                 {
                     provide: AuthQueueService,
-                    useClass: AuthQueueServiceMock
+                    useFactory: () => (
+                        jasmine.createSpyObj('AuthQueueService', ['createRequest', 'addRequest', 'releaseRequests'])
+                    )
                 }
             ]
         });
@@ -37,6 +44,7 @@ describe('ApiAuthorizationService', () => {
         service = injector.get(ApiAuthorizationService);
         authService = injector.get(AuthService);
         authQueueService = injector.get(AuthQueueService);
+        httpMethod = injector.get(HttpGetService);
     });
 
     it('should be created', () => {
@@ -44,16 +52,21 @@ describe('ApiAuthorizationService', () => {
     });
 
     describe('handle', () => {
-        let httpMethod: HttpMethod;
         let url: string;
         let testToken: string;
+        let queueRequest: AuthQueueRequest;
 
         beforeEach(() => {
-            httpMethod = new HttpGetServiceMock;
             url = 'testUrl';
             testToken = 'testToken';
+            queueRequest = {
+                source: new Subject,
+                options: {},
+                httpMethod,
+                url
+            };
 
-            spyOn(authService, 'getToken').and.returnValue(testToken);
+            authService.getToken.and.returnValue(testToken);
         });
 
         it('should, if authorized, make request with auth token and return observable', () => {
@@ -64,8 +77,8 @@ describe('ApiAuthorizationService', () => {
                 }
             };
 
-            spyOn(authService, 'isAuthorized').and.returnValue(true);
-            spyOn(httpMethod, 'request').and.callThrough();
+            authService.isAuthorized.and.returnValue(true);
+            httpMethod.request.and.returnValue(new Observable);
 
             const result = service.handle(httpMethod, url);
 
@@ -74,29 +87,22 @@ describe('ApiAuthorizationService', () => {
         });
 
         it('should, if not authorized, create new queue request, add it to queue, authorize and return observable', () => {
-            const testAuthQueueRequest = {
-                source: new Subject,
-                options: {},
-                httpMethod,
-                url
-            };
-
-            spyOn(authService, 'isAuthorized').and.returnValue(false);
-            spyOn(authQueueService, 'createRequest').and.callThrough();
-            spyOn(authQueueService, 'addRequest').and.callThrough();
-            spyOn(authService, 'authorize').and.callThrough();
+            authService.isAuthorized.and.returnValue(false);
+            authQueueService.createRequest.and.returnValue(queueRequest);
+            authService.authorize.and.returnValue(new Observable);
 
             const result = service.handle(httpMethod, url);
 
             expect(authQueueService.createRequest).toHaveBeenCalledWith(httpMethod, url, {});
-            expect(authQueueService.addRequest).toHaveBeenCalledWith(testAuthQueueRequest);
+            expect(authQueueService.addRequest).toHaveBeenCalledWith(queueRequest);
             expect(authService.authorize).toHaveBeenCalled();
             expect(result instanceof Observable).toBeTruthy();
         });
 
         it('should, if not authorized, call authorize only one time for N number of requests', () => {
-            spyOn(authService, 'isAuthorized').and.returnValue(false);
-            spyOn(authService, 'authorize').and.callThrough();
+            authQueueService.createRequest.and.returnValue(queueRequest);
+            authService.isAuthorized.and.returnValue(false);
+            authService.authorize.and.returnValue(new Observable);
 
             service.handle(httpMethod, url);
             service.handle(httpMethod, url);
@@ -108,12 +114,13 @@ describe('ApiAuthorizationService', () => {
             const expectedErrorMessage = 'Authorization failed!';
             const authCredential = {
                 success: false,
-                expiresIn: new Date,
+                expiresIn: Date.now(),
                 accessToken: ''
             };
 
-            spyOn(authService, 'isAuthorized').and.returnValue(false);
-            spyOn(authService, 'authorize').and.returnValue(of(authCredential));
+            authService.isAuthorized.and.returnValue(false);
+            authService.authorize.and.returnValue(of(authCredential));
+            authQueueService.createRequest.and.returnValue(queueRequest);
 
             try {
                 service.handle(httpMethod, url);
@@ -130,15 +137,16 @@ describe('ApiAuthorizationService', () => {
             };
             const authCredential = {
                 success: true,
-                expiresIn: new Date,
+                expiresIn: Date.now(),
                 accessToken: ''
             };
 
-            spyOn(authService, 'isAuthorized').and.returnValue(false);
-            spyOn(authService, 'authorize').and.returnValue(of(authCredential));
-            spyOn(authQueueService, 'releaseRequests').and.callFake(() => [request]);
-            spyOn(httpMethod, 'request').and.returnValue(of(requestResult));
-            spyOn(authQueueService, 'addRequest').and.callFake((req: AuthQueueRequest) => {
+            authService.isAuthorized.and.returnValue(false);
+            authService.authorize.and.returnValue(of(authCredential));
+            httpMethod.request.and.returnValue(of(requestResult));
+            authQueueService.releaseRequests.and.callFake(() => [request]);
+            authQueueService.createRequest.and.returnValue(queueRequest);
+            authQueueService.addRequest.and.callFake((req: AuthQueueRequest) => {
                 spyOn(req.source, 'next');
                 spyOn(req.source, 'complete');
                 request = req;

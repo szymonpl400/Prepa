@@ -1,15 +1,15 @@
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, EventEmitter } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { async, ComponentFixture, TestBed, getTestBed } from '@angular/core/testing';
 
 import { AppContainerComponent } from './app-container.component';
-import { NavigationManagerService, NavigationManagerServiceMock } from '../../modules/shared/shared.module';
+import { NavigationManagerService } from '../../modules/shared/shared.module';
 import { MaterialModule } from '../../modules/material/material.module';
 
 describe('AppContainerComponent', () => {
     let component: AppContainerComponent;
     let fixture: ComponentFixture<AppContainerComponent>;
-    let navigationManagerService: NavigationManagerServiceMock;
+    let navigationManagerService: jasmine.SpyObj<NavigationManagerService>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -23,7 +23,9 @@ describe('AppContainerComponent', () => {
             providers: [
                 {
                     provide: NavigationManagerService,
-                    useClass: NavigationManagerServiceMock
+                    useFactory: () => ({
+                        toggle: new EventEmitter
+                    })
                 }
             ],
             schemas: [ CUSTOM_ELEMENTS_SCHEMA ]

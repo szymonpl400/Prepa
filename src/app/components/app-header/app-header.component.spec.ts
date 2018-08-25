@@ -1,14 +1,14 @@
 import { async, ComponentFixture, TestBed, getTestBed } from '@angular/core/testing';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, EventEmitter } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
 import { AppHeaderComponent } from './app-header.component';
-import { NavigationManagerService, NavigationManagerServiceMock } from '../../modules/shared/shared.module';
+import { NavigationManagerService } from '../../modules/shared/shared.module';
 
 describe('AppHeaderComponent', () => {
   let component: AppHeaderComponent;
   let fixture: ComponentFixture<AppHeaderComponent>;
-  let navigationManagerService: NavigationManagerServiceMock;
+  let navigationManagerService: NavigationManagerService;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -18,7 +18,9 @@ describe('AppHeaderComponent', () => {
             providers: [
                 {
                     provide: NavigationManagerService,
-                    useClass: NavigationManagerServiceMock
+                    useFactory: () => ({
+                        toggle: new EventEmitter
+                    })
                 }
             ],
             schemas: [ CUSTOM_ELEMENTS_SCHEMA ]

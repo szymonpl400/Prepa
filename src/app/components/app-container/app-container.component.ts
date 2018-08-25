@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { MatSidenav } from '@angular/material';
 
 import { NavigationManagerService } from '../../modules/shared/shared.module';
@@ -8,13 +8,15 @@ import { NavigationManagerService } from '../../modules/shared/shared.module';
   templateUrl: './app-container.component.html',
   styleUrls: ['./app-container.component.scss']
 })
-export class AppContainerComponent {
-
+export class AppContainerComponent implements OnInit {
     @ViewChild('sidenav')
     sidenav: MatSidenav;
 
-    constructor(navigationManager: NavigationManagerService) {
-        navigationManager.toggle.subscribe(() => {
+    constructor(private navigationManager: NavigationManagerService) {
+    }
+
+    ngOnInit() {
+        this.navigationManager.toggle.subscribe(() => {
             this.sidenav.toggle();
         });
     }

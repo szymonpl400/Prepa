@@ -2,7 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { NavigationManagerService } from './services/navigation-manager/navigation-manager.service';
-import { NavigationManagerServiceMock } from './services/navigation-manager/navigation-manager.service.mock';
+import { DateHelperService } from './services/date-helper/date-helper.service';
+import { TypeHelperService } from './services/type-helper/type-helper.service';
 
 @NgModule({
     imports: [
@@ -10,12 +11,15 @@ import { NavigationManagerServiceMock } from './services/navigation-manager/navi
     ],
     providers: [
         NavigationManagerService,
-        NavigationManagerServiceMock
+        DateHelperService,
+        TypeHelperService
     ],
     declarations: []
 })
 export class SharedModule { }
 
 export { Paging } from './interfaces/paging';
+
 export { NavigationManagerService } from './services/navigation-manager/navigation-manager.service';
-export { NavigationManagerServiceMock } from './services/navigation-manager/navigation-manager.service.mock';
+export { DateHelperService } from './services/date-helper/date-helper.service';
+export { TypeHelperService } from './services/type-helper/type-helper.service';
