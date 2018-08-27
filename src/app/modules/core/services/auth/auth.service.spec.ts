@@ -4,12 +4,14 @@ import { Observable } from 'rxjs';
 
 import { AuthService } from './auth.service';
 import { DateHelperService, TypeHelperService } from '../../../shared/shared.module';
+import { AuthCredential } from '../../interfaces/auth-credential';
 
 describe('AuthService', () => {
     let injector: TestBed;
     let service: AuthService;
     let httpMock: HttpTestingController;
     let typeHelper: jasmine.SpyObj<TypeHelperService>;
+    let dateHelper: jasmine.SpyObj<DateHelperService>;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -35,6 +37,7 @@ describe('AuthService', () => {
         service = injector.get(AuthService);
         httpMock = injector.get(HttpTestingController);
         typeHelper = injector.get(TypeHelperService);
+        dateHelper = injector.get(DateHelperService);
     });
 
     afterEach(() => {
@@ -53,6 +56,23 @@ describe('AuthService', () => {
 
         it('should return Observable', () => {
             expect(service.authorize() instanceof Observable).toBeTruthy();
+        });
+
+        it('should add expiresIn seconds to total expiresIn time', (done) => {
+            const authCredential: AuthCredential = {
+                success: true,
+                accessToken: 'test',
+                expiresIn: 60
+            };
+            const dateNow = 30;
+            dateHelper.secondsToMiliseconds.and.returnValue(authCredential.expiresIn);
+            spyOn(Date, 'now').and.returnValue(dateNow);
+            service.authorize().subscribe((response: AuthCredential) => {
+                expect(dateNow + authCredential.expiresIn).toEqual(response.expiresIn);
+                done();
+            });
+            const request = httpMock.expectOne('/auth');
+            request.flush(authCredential);
         });
     });
 
@@ -78,7 +98,8 @@ describe('AuthService', () => {
         });
 
         it('should return false when expires_in is obsolete', () => {
-            const yesterday = new Date().setDate(new Date().getDate() - 1);
+            const yesterday = new Date;
+            yesterday.setDate(new Date().getDate() - 1);
             spyOn(localStorage, 'getItem').and.callFake((key) => {
                 switch (key) {
                     case service.accessTokenName:
@@ -93,7 +114,8 @@ describe('AuthService', () => {
         });
 
         it('should return true when access_token is present and expires_in is valid', () => {
-            const tommorow = new Date().setDate(new Date().getDate() + 1);
+            const tommorow = new Date;
+            tommorow.setDate(new Date().getDate() + 1);
             typeHelper.isNumber.and.returnValue(true);
             spyOn(localStorage, 'getItem').and.callFake((key) => {
                 switch (key) {
