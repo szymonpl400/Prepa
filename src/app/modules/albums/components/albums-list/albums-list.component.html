@@ -1,0 +1,5 @@
+<mat-grid-list [cols]="numOfColumns" [rowHeight]="rowHeight">
+    <mat-grid-tile *ngFor="let album of albums; trackBy: trackByAlbum">
+        <prp-album-item [album]="album" [imageWidth]="imageWidth"></prp-album-item>
+    </mat-grid-tile>
+</mat-grid-list>

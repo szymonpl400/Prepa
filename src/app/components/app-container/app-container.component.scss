@@ -1,12 +1,24 @@
 .sidenav-container {
     position: absolute;
-    top: 64px;
+    top: 56px;
     bottom: 0;
     left: 0;
     right: 0;
+
+    @media (min-width: 600px) {
+        top: 64px;
+    }
 }
 
 .sidenav {
     max-width: 300px;
     width: 100%;
+}
+
+.content {
+    padding: 0 20px;
+
+    @media (min-width: 950px) {
+        padding: 0 60px;
+    }
 }

@@ -7,6 +7,10 @@ export class AlbumsMockData {
             {
                 album_type: 'album',
                 available_markets: ['AD', 'AR', 'AT', 'AU', 'BE'],
+                images: [
+                    { height: 640, width: 640, url: 'https://api.spotify.com/v1/artists/2RdwBSPQiwcmiDo9kixcl8' },
+                    { height: 300, width: 300, url: 'https://open.spotify.com/album/5ZX4m5aVSmWQ5iHAPQpT71' }
+                ],
                 href: 'https://api.spotify.com/v1/albums/43977e0YlJeMXG77uCCSMX',
                 id: '43977e0YlJeMXG77uCCSMX',
                 name: 'Shut Up Lets Dance (Vol. II)',
@@ -16,6 +20,10 @@ export class AlbumsMockData {
             {
                 album_type: 'compilation',
                 available_markets: ['CZ', 'DE', 'DK', 'DO', 'EC', 'EE', 'ES', 'FI'],
+                images: [
+                    { height: 640, width: 640, url: 'https://api.spotify.com/v1/artists/2RdwBSPQiwcmiDo9kixcl8' },
+                    { height: 300, width: 300, url: 'https://open.spotify.com/album/5ZX4m5aVSmWQ5iHAPQpT71' }
+                ],
                 href: 'https://api.spotify.com/v1/albums/189ngoT3WxR5mZSYkAGOLF',
                 id: '189ngoT3WxR5mZSYkAGOLF',
                 name: 'Classic Club Monsters (25 Floor Killers)',
@@ -25,6 +33,10 @@ export class AlbumsMockData {
             {
                 album_type: 'single',
                 available_markets: ['PY', 'RO', 'SE', 'SG'],
+                images: [
+                    { height: 640, width: 640, url: 'https://api.spotify.com/v1/artists/2RdwBSPQiwcmiDo9kixcl8' },
+                    { height: 300, width: 300, url: 'https://open.spotify.com/album/5ZX4m5aVSmWQ5iHAPQpT71' }
+                ],
                 href: 'https://api.spotify.com/v1/albums/0sNOF9WDwhWunNAHPD3Baj',
                 id: '0sNOF9WDwhWunNAHPD3Baj',
                 name: `She's So Unusual`,

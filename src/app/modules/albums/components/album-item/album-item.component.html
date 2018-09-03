@@ -1,0 +1,13 @@
+<mat-card role="region" tabindex="0">
+    <img [src]="image.url" 
+         [alt]="imageAlt" 
+         [style.width]="imageWidthPx" 
+         class="image" />
+    <mat-card-header [style.width]="imageWidthPx" class="header">
+        <mat-card-title>
+            <h4 class="overflow-text">
+                {{ album.name }}
+            </h4>
+        </mat-card-title>
+    </mat-card-header>
+</mat-card>

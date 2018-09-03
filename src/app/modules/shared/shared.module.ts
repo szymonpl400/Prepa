@@ -13,12 +13,12 @@ import { TypeHelperService } from './services/type-helper/type-helper.service';
         NavigationManagerService,
         DateHelperService,
         TypeHelperService
-    ],
-    declarations: []
+    ]
 })
 export class SharedModule { }
 
 export { Paging } from './interfaces/paging';
+export { Image } from './interfaces/image';
 
 export { NavigationManagerService } from './services/navigation-manager/navigation-manager.service';
 export { DateHelperService } from './services/date-helper/date-helper.service';
