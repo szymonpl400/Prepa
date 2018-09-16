@@ -1,5 +1,6 @@
 import { Album } from '../interfaces/album';
 import { Paging } from '../../shared/shared.module';
+import { ArtistsMockData } from '../../artists/artists.module';
 
 export class AlbumsMockData {
     static getAlbums(): Album[] {
@@ -7,6 +8,7 @@ export class AlbumsMockData {
             {
                 album_type: 'album',
                 available_markets: ['AD', 'AR', 'AT', 'AU', 'BE'],
+                artists: ArtistsMockData.getArtists(),
                 images: [
                     { height: 640, width: 640, url: 'https://api.spotify.com/v1/artists/2RdwBSPQiwcmiDo9kixcl8' },
                     { height: 300, width: 300, url: 'https://open.spotify.com/album/5ZX4m5aVSmWQ5iHAPQpT71' }
@@ -20,6 +22,7 @@ export class AlbumsMockData {
             {
                 album_type: 'compilation',
                 available_markets: ['CZ', 'DE', 'DK', 'DO', 'EC', 'EE', 'ES', 'FI'],
+                artists: ArtistsMockData.getArtists(),
                 images: [
                     { height: 640, width: 640, url: 'https://api.spotify.com/v1/artists/2RdwBSPQiwcmiDo9kixcl8' },
                     { height: 300, width: 300, url: 'https://open.spotify.com/album/5ZX4m5aVSmWQ5iHAPQpT71' }
@@ -33,6 +36,7 @@ export class AlbumsMockData {
             {
                 album_type: 'single',
                 available_markets: ['PY', 'RO', 'SE', 'SG'],
+                artists: ArtistsMockData.getArtists(),
                 images: [
                     { height: 640, width: 640, url: 'https://api.spotify.com/v1/artists/2RdwBSPQiwcmiDo9kixcl8' },
                     { height: 300, width: 300, url: 'https://open.spotify.com/album/5ZX4m5aVSmWQ5iHAPQpT71' }
@@ -44,6 +48,10 @@ export class AlbumsMockData {
                 uri: 'spotify:track:3f9zqUnrnIq0LANhmnaF0V'
             }
         ];
+    }
+
+    static getAlbum(): Album {
+        return AlbumsMockData.getAlbums()[0];
     }
 
     static getAlbumsWithPaging(): Paging<Album> {

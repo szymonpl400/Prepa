@@ -8,6 +8,7 @@ import { MaterialModule } from './modules/material/material.module';
 import { SharedModule } from './modules/shared/shared.module';
 import { CoreModule } from './modules/core/core.module';
 import { AlbumsModule } from './modules/albums/albums.module';
+import { ArtistsModule } from './modules/artists/artists.module';
 
 import { AppComponent } from './components/app/app.component';
 import { AppHeaderComponent } from './components/app-header/app-header.component';
@@ -27,6 +28,7 @@ import { AppContainerComponent } from './components/app-container/app-container.
     SharedModule,
     CoreModule,
     AlbumsModule,
+    ArtistsModule,
     AppRoutingModule
   ],
   bootstrap: [AppComponent]

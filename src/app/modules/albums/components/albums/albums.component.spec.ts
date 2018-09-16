@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed, getTestBed } from '@angular/core/testing';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { of } from 'rxjs';
 
 import { AlbumsComponent } from './albums.component';
@@ -14,6 +15,7 @@ describe('AlbumsComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [ AlbumsComponent ],
+            schemas: [CUSTOM_ELEMENTS_SCHEMA],
             providers: [
                 {
                     provide: AlbumsRepositoryService,

@@ -1,3 +1,32 @@
+@import '~assets/scss/mixins';
+
+$artist-name-font-size: 1.5rem;
+$album-artists-font-size: $artist-name-font-size * 0.6;
+
+.card {
+    cursor: pointer;
+    box-sizing: border-box;
+    height: 100%;
+    padding: 0;
+
+    &:hover, &:focus {
+        @include prp-active-card();
+    }
+}
+
 .header {
-    display: block;
+    padding: 12px;
+}
+
+.album-image {
+    width: 100%;
+}
+
+.album-name {
+    font-size: $artist-name-font-size;
+    margin-bottom: 12px;
+}
+
+.album-artists {
+    font-size: $album-artists-font-size;
 }

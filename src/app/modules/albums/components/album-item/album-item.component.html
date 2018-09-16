@@ -1,13 +1,13 @@
-<mat-card role="region" tabindex="0">
-    <img [src]="image.url" 
-         [alt]="imageAlt" 
-         [style.width]="imageWidthPx" 
-         class="image" />
-    <mat-card-header [style.width]="imageWidthPx" class="header">
+<mat-card role="region" tabindex="0" class="card">
+    <img [src]="image.url" [alt]="imageAlt" class="album-image" />
+    <mat-card-header class="header">
         <mat-card-title>
-            <h4 class="overflow-text">
+            <h5 class="album-name">
                 {{ album.name }}
-            </h4>
+            </h5>
+            <h6 class="album-artists">
+                {{ album.artists | artistsNameBySeparator: ', ' }}
+            </h6>
         </mat-card-title>
     </mat-card-header>
 </mat-card>

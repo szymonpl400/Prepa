@@ -11,11 +11,7 @@ import { Image } from '../../../shared/shared.module';
 export class AlbumItemComponent {
 
     get image(): Image {
-        return this.album.images[1];
-    }
-
-    get imageWidthPx(): string {
-        return this.imageWidth + 'px';
+        return this.album.images[0];
     }
 
     get imageAlt(): string {
@@ -24,7 +20,4 @@ export class AlbumItemComponent {
 
     @Input()
     album: Album;
-
-    @Input()
-    imageWidth: number;
 }

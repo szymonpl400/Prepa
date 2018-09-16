@@ -1,0 +1,5 @@
+@import '~assets/scss/mixins';
+
+:host {
+    @include prp-content-container();
+}

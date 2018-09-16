@@ -1,6 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { AlbumItemComponent } from './album-item.component';
+import { ArtistsNameBySeparatorPipe } from '../../pipes/artists-name-by-separator.pipe';
+import { AlbumsMockData } from '../../mocks/albums-mock-data';
+
 
 describe('AlbumItemComponent', () => {
   let component: AlbumItemComponent;
@@ -8,7 +12,11 @@ describe('AlbumItemComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AlbumItemComponent ]
+      declarations: [
+          AlbumItemComponent,
+          ArtistsNameBySeparatorPipe
+        ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
   }));
@@ -16,6 +24,9 @@ describe('AlbumItemComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AlbumItemComponent);
     component = fixture.componentInstance;
+
+    component.album = AlbumsMockData.getAlbum();
+
     fixture.detectChanges();
   });
 

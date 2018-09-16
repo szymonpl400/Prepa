@@ -8,9 +8,7 @@ import { AlbumsListComponent } from './components/albums-list/albums-list.compon
 import { AlbumItemComponent } from './components/album-item/album-item.component';
 
 import { AlbumsRepositoryService } from './services/albums-repository/albums-repository.service';
-import { ColumnsNumberMapperService } from './services/responsiveness/columns-number-mapper/columns-number-mapper.service';
-import { ImageWidthMapperService } from './services/responsiveness/image-width-mapper/image-width-mapper.service';
-import { RowHeightMapperService } from './services/responsiveness/row-height-mapper/row-height-mapper.service';
+import { ArtistsNameBySeparatorPipe } from './pipes/artists-name-by-separator.pipe';
 
 @NgModule({
     imports: [
@@ -20,13 +18,11 @@ import { RowHeightMapperService } from './services/responsiveness/row-height-map
     declarations: [
         AlbumsComponent,
         AlbumsListComponent,
-        AlbumItemComponent
+        AlbumItemComponent,
+        ArtistsNameBySeparatorPipe
     ],
     providers: [
-        AlbumsRepositoryService,
-        ColumnsNumberMapperService,
-        ImageWidthMapperService,
-        RowHeightMapperService
+        AlbumsRepositoryService
     ]
 })
 export class AlbumsModule { }

@@ -11,8 +11,7 @@ import { NavigationManagerService } from '../../modules/shared/shared.module';
 })
 export class AppHeaderComponent {
 
-    constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private navigationManager: NavigationManagerService) {
-        iconRegistry.addSvgIcon('library-music', sanitizer.bypassSecurityTrustResourceUrl('assets/library-music.svg'));
+    constructor(private navigationManager: NavigationManagerService) {
     }
 
     toggleMenu() {
