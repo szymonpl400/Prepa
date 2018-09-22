@@ -1,8 +1,6 @@
-<div class="mdc-layout-grid">
-    <div class="mdc-layout-grid__inner">
-      <div *ngFor="let album of albums; trackBy: trackByAlbum"  
-           class="mdc-layout-grid__cell">
-           <prp-album-item [album]="album"></prp-album-item>
-      </div>
-    </div>
+<div class="albums">
+    <prp-album-item *ngFor="let album of albums; trackBy: trackByAlbum" 
+                    [album]="album"
+                    class="album-item">
+    </prp-album-item>
 </div>

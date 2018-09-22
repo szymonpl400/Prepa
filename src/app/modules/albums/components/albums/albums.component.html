@@ -1,5 +1,4 @@
-<prp-albums-list 
-    *ngIf="albums.length > 0"
-    [albums]="albums"
-    class="albums-list">
+<prp-albums-list *ngIf="!areAlbumsEmpty"
+                [albums]="albums"
+                class="albums-list">
 </prp-albums-list>

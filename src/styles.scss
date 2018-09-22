@@ -1,5 +1,4 @@
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
-@import '~@material/layout-grid/dist/mdc.layout-grid.min.css';
 @import '~@material/layout-grid/variables';
 @import '~assets/scss/variables';
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Mono:300');
@@ -15,11 +14,11 @@
 html {
     font-size: 14px;
 
-    @media (min-width: map-get($mdc-layout-grid-breakpoints, "tablet")) {
+    @media (min-width: 800px) {
         font-size: 15px;
     }
 
-    @media (min-width: map-get($mdc-layout-grid-breakpoints, "desktop")) {
+    @media (min-width: 1200px) {
         font-size: 16px;
     }
 }

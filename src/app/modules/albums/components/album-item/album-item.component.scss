@@ -1,12 +1,13 @@
 @import '~assets/scss/mixins';
 
-$artist-name-font-size: 1.5rem;
+$artist-name-font-size: 1.2rem;
 $album-artists-font-size: $artist-name-font-size * 0.6;
 
 .card {
     cursor: pointer;
     box-sizing: border-box;
     height: 100%;
+    max-width: 300px;
     padding: 0;
 
     &:hover, &:focus {
