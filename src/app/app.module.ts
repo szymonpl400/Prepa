@@ -9,6 +9,9 @@ import { SharedModule } from './modules/shared/shared.module';
 import { CoreModule } from './modules/core/core.module';
 import { AlbumsModule } from './modules/albums/albums.module';
 import { ArtistsModule } from './modules/artists/artists.module';
+import { TracksModule } from './modules/tracks/tracks.module';
+import { RepositoryModule } from './modules/repository/repository.module';
+import { PlayerModule } from './modules/player/player.module';
 
 import { AppComponent } from './components/app/app.component';
 import { AppHeaderComponent } from './components/app-header/app-header.component';
@@ -29,6 +32,9 @@ import { AppContainerComponent } from './components/app-container/app-container.
     CoreModule,
     AlbumsModule,
     ArtistsModule,
+    TracksModule,
+    PlayerModule,
+    RepositoryModule,
     AppRoutingModule
   ],
   bootstrap: [AppComponent]

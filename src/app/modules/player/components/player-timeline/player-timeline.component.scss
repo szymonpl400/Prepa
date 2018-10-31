@@ -1,0 +1,11 @@
+@import '~assets/scss/variables';
+@import '~@angular/material/theming';
+
+.timeline {
+    background-color: mat-color(map-get($theme, background), unselected-chip);
+}
+
+.timeline-progress {
+    height: 3px;
+    background-color: mat-color(map-get($theme, accent), 400, 0.8);
+}

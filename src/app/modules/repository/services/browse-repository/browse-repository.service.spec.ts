@@ -1,20 +1,19 @@
-import { TestBed, getTestBed } from '@angular/core/testing';
+import { TestBed, inject, getTestBed } from '@angular/core/testing';
 import { Subject } from 'rxjs';
 
-import { AlbumsRepositoryService } from './albums-repository.service';
+import { BrowseRepositoryService } from './browse-repository.service';
+import { Paging, Album } from '../../../shared/shared.module';
+import { AlbumsMockData } from '../../../albums/mocks/albums-mock-data';
 import { ApiService } from '../../../core/core.module';
-import { AlbumsMockData } from '../../mocks/albums-mock-data';
-import { Paging } from '../../../shared/shared.module';
-import { Album } from '../../interfaces/album';
 
-describe('AlbumsRepositoryService', () => {
-    let service: AlbumsRepositoryService;
+describe('BrowseRepositoryService', () => {
+    let service: BrowseRepositoryService;
     let apiService: jasmine.SpyObj<ApiService>;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
             providers: [
-                AlbumsRepositoryService,
+                BrowseRepositoryService,
                 {
                     provide: ApiService,
                     useFactory: () => (
@@ -25,7 +24,7 @@ describe('AlbumsRepositoryService', () => {
         });
 
         const injector = getTestBed();
-        service = injector.get(AlbumsRepositoryService);
+        service = injector.get(BrowseRepositoryService);
         apiService = injector.get(ApiService);
     });
 

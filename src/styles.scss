@@ -1,8 +1,11 @@
-@import '~@angular/material/prebuilt-themes/indigo-pink.css';
 @import '~assets/scss/variables';
+@import '~@angular/material/theming';
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Mono:300');
 @import url('https://fonts.googleapis.com/css?family=Chela+One');
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+@include mat-core();
+@include angular-material-theme($theme);
 
 * {
     font-family: $font-default;
@@ -20,11 +23,4 @@ html {
     @media (min-width: 1200px) {
         font-size: 16px;
     }
-}
-
-.overflow-text {
-    display: block;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
 }

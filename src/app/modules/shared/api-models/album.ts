@@ -1,5 +1,5 @@
-import { Image } from '../../shared/shared.module';
-import { Artist } from '../../artists/artists.module';
+import { Image  } from './image';
+import { Artist } from './artist';
 
 export interface Album {
     album_type: string;

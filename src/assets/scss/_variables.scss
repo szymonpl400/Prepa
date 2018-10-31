@@ -1,2 +1,19 @@
+@import '~@angular/material/theming';
+
 $font-default: 'Roboto Mono', sans-serif;
 $font-heading: 'Roboto Mono', sans-serif;
+
+$theme-primary: mat-palette($mat-deep-purple, 700, 500, 900);
+$theme-accent: mat-palette($mat-purple);
+$theme-warn: mat-palette($mat-deep-orange, A200);
+
+$theme: mat-dark-theme(
+    $theme-primary,
+    $theme-accent,
+    $theme-warn
+);
+
+$page-size: (
+    toolbar: 64px,
+    footer: 100px
+);

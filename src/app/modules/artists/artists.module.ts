@@ -1,14 +1,12 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
-  imports: [
-    CommonModule
-  ],
-  declarations: []
+    imports: [
+        SharedModule
+    ],
+    declarations: []
 })
 export class ArtistsModule { }
 
-
-export { Artist } from './interfaces/artist';
 export { ArtistsMockData } from './mocks/artists-mock-data';

@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
-import { AlbumsRepositoryService } from '../../services/albums-repository/albums-repository.service';
-import { Album } from '../../interfaces/album';
-import { Paging } from '../../../shared/shared.module';
+import { BrowseRepositoryService } from '../../../repository/repository.module';
+import { Paging, Album } from '../../../shared/shared.module';
 
 @Component({
   selector: 'prp-albums',
@@ -16,10 +15,10 @@ export class AlbumsComponent implements OnInit {
         return this.albums.length === 0;
     }
 
-    constructor(private albumsRepository: AlbumsRepositoryService) { }
+    constructor(private browseRepository: BrowseRepositoryService) { }
 
     ngOnInit() {
-        this.albumsRepository.getNewReleases().subscribe((response: { albums: Paging<Album> }) => {
+        this.browseRepository.getNewReleases().subscribe((response: { albums: Paging<Album> }) => {
             this.albums = response.albums.items;
         });
     }

@@ -1,0 +1,25 @@
+
+@mixin switch-player($mode) {
+    .play {
+        display: #{if($mode == on, 'block', 'none')};
+    }
+
+    .pause {
+        display: #{if($mode == off, 'block', 'none')};
+    }
+}
+
+@include switch-player(on);
+
+.controls {
+    display: flex;
+    align-items: center;
+}
+
+.is-playing {
+    @include switch-player(off);
+}
+
+.control {
+    cursor: pointer;
+}

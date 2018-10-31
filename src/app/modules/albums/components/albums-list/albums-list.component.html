@@ -1,6 +1,7 @@
 <div class="albums">
     <prp-album-item *ngFor="let album of albums; trackBy: trackByAlbum" 
                     [album]="album"
-                    class="album-item">
+                    class="album-item"
+                    (click)="goToTracks(album.id)">
     </prp-album-item>
 </div>

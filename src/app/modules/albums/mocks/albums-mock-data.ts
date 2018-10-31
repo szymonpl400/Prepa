@@ -1,5 +1,4 @@
-import { Album } from '../interfaces/album';
-import { Paging } from '../../shared/shared.module';
+import { Paging, Album } from '../../shared/shared.module';
 import { ArtistsMockData } from '../../artists/artists.module';
 
 export class AlbumsMockData {

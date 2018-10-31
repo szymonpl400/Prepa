@@ -1,7 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-import { Album } from '../../interfaces/album';
-import { Image } from '../../../shared/shared.module';
+import { Image, Album } from '../../../shared/shared.module';
 
 @Component({
   selector: 'prp-album-item',

@@ -1,4 +1,4 @@
-import { Artist } from '../artists.module';
+import { Artist } from '../../shared/shared.module';
 
 export class ArtistsMockData {
     static getArtists(): Artist[] {

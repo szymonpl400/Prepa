@@ -1,16 +1,33 @@
+@import '~assets/scss/variables';
+
+$default-content-size: 100vh - #{map-get($page-size, toolbar)};
+
 .sidenav-container {
     position: absolute;
-    top: 56px;
+    top: map-get($page-size, toolbar);
     bottom: 0;
     left: 0;
     right: 0;
-
-    @media (min-width: 600px) {
-        top: 64px;
-    }
 }
 
 .sidenav {
     max-width: 300px;
     width: 100%;
+}
+
+.content {
+    height: calc(#{$default-content-size});
+    overflow-y: auto;
+
+    &.is-player-active {
+        height: calc(#{$default-content-size} - #{map-get($page-size, footer)});
+    }
+}
+
+.player {
+    position: absolute;
+    bottom: 0;
+    height: map-get($page-size, footer);
+    width: 100%;
+    z-index: 2;
 }

@@ -1,0 +1,56 @@
+@import '~assets/scss/variables';
+@import '~@angular/material/theming';
+
+$position-types: (
+    number: '.position-number',
+    play: '.position-play',
+    is-playing: '.position-is-playing'
+);
+
+@mixin switch-position-type($type) {
+    @each $key, $value in $position-types {
+        #{$value} {
+            display: #{if($value == $type, 'block', 'none')}
+        } 
+    }
+}
+
+@include switch-position-type(map-get($position-types, number));
+
+.table {
+    width: calc(100% - 60px);
+    margin: 50px auto;
+}
+
+.cell, .header-cell {
+    padding: 0 6px;
+}
+
+.position {
+    text-align: center;
+    width: 24px;
+
+    &:hover {
+        @include switch-position-type(map-get($position-types, play));
+    }
+}
+
+.row {
+    cursor: pointer;
+
+    &:hover, &:focus {
+        background-color: mat-color(map-get($theme, primary), 500, 0.3);
+    }
+
+    &.active {
+        background-color: mat-color(map-get($theme, primary), 400, 0.7);   
+    }
+
+    &.is-playing {
+        @include switch-position-type(map-get($position-types, is-playing));
+    }
+}
+
+.time {
+    width: 56px;
+}

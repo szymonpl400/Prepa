@@ -1,5 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Artist } from '../../artists/artists.module';
+
+import { Artist } from '../../../shared/shared.module';
 
 @Pipe({
     name: 'artistsNameBySeparator'

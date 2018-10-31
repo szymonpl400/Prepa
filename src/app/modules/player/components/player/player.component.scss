@@ -1,0 +1,23 @@
+.audio {
+    display: none;
+}
+
+.player-panel {
+    display: flex;
+    justify-content: space-between;
+    padding: 24px;
+}
+
+.player-panel-item {
+    flex: 1 1 0;
+}
+
+.player-controls {
+    display: flex;
+    justify-content: center;
+}
+
+.player-timer, .player-speaker {
+    display: flex;
+    justify-content: flex-end;
+}
