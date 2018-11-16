@@ -1,12 +1,15 @@
-<audio controls class="audio" #audio>
-    <source [src]="activeTrack.preview_url" type="audio/mp3">
+<audio controls (ended)="onAudioEnded($event)" class="audio" #audio>
+    <source [src]="playerService.activeTrack.preview_url" type="audio/mp3">
 </audio>
-<prp-player-timeline></prp-player-timeline>
+<prp-player-timeline [progress]="(time / duration) * 100" (timelineClick)="onTimelineClick($event)"></prp-player-timeline>
 <div class="player-panel">
-    <prp-player-description class="player-panel-item" [track]="activeTrack"></prp-player-description>
-    <prp-player-controls class="player-panel-item player-controls" ></prp-player-controls>
+    <prp-player-description class="player-panel-item" [track]="playerService.activeTrack" [album]="playerService.activeAlbum"></prp-player-description>
+    <prp-player-controls class="player-panel-item player-controls"></prp-player-controls>
     <div class="player-panel-item">
-        <prp-player-timer [duration]="activeTrack.duration_ms" [time]="time" class="player-timer"></prp-player-timer>
-        <prp-player-speaker class="player-speaker"></prp-player-speaker>
+        <prp-player-timer [duration]="duration" 
+                          [time]="time" 
+                          class="player-timer">
+        </prp-player-timer>
+        <prp-player-speaker class="player-speaker" (volumeChanged)="onVolumeChanged($event)"></prp-player-speaker>
     </div>
 </div>

@@ -1,4 +1,4 @@
-<prp-tracks-list [tracks]="tracks"
-                 [activeTrack]="activeTrack | async"
-                 [isPlaying]="isPlaying | async">
+<prp-tracks-list [tracks]="playerService.activeAlbum?.tracks.items"
+                 [activeTrack]="playerService.activeTrack"
+                 [isPlaying]="playerService.playControl.active">
 </prp-tracks-list>

@@ -1,11 +1,22 @@
+@import '~assets/scss/variables';
+
+:host {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    bottom: 0;
+    height: map-get($page-size, footer);
+    width: 100%;
+}
+
 .audio {
     display: none;
 }
 
 .player-panel {
     display: flex;
-    justify-content: space-between;
-    padding: 24px;
+    margin: auto 0;
+    padding: 0 24px;
 }
 
 .player-panel-item {

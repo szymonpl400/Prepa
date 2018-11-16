@@ -1,10 +1,7 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subject, Observable } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 import { AlbumsRepositoryService } from '../../../repository/repository.module';
-import { Paging, Track } from '../../../shared/shared.module';
 import { PlayerService } from '../../../player/player.module';
 
 @Component({
@@ -12,28 +9,14 @@ import { PlayerService } from '../../../player/player.module';
   templateUrl: './tracks.component.html',
   styleUrls: ['./tracks.component.scss']
 })
-export class TracksComponent implements OnInit, OnDestroy {
-    componentDestroyed = new Subject();
-    isPlaying: Observable<boolean>;
-    activeTrack: Observable<Track>;
-    tracks: Track[] = [];
-
+export class TracksComponent implements OnInit {
     constructor(private activatedRoute: ActivatedRoute,
                 private albumsRepository: AlbumsRepositoryService,
-                private playerService: PlayerService) {
+                public playerService: PlayerService) {
     }
 
     ngOnInit() {
         const albumId = this.activatedRoute.snapshot.params['id'];
-        this.albumsRepository.getAlbumsTracks(albumId).subscribe((response: Paging<Track>) => {
-            this.tracks = response.items;
-        });
-        this.activeTrack = this.playerService.activeTrack.pipe(takeUntil(this.componentDestroyed));
-        this.isPlaying = this.playerService.togglePlay.pipe(takeUntil(this.componentDestroyed));
-    }
-
-    ngOnDestroy() {
-        this.componentDestroyed.next();
-        this.componentDestroyed.complete();
+        this.albumsRepository.getAlbum(albumId).subscribe(album => this.playerService.changeAlbum(album));
     }
 }

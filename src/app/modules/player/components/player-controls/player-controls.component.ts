@@ -1,6 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Component } from '@angular/core';
 
 import { PlayerService } from '../../services/player/player.service';
 
@@ -9,24 +7,24 @@ import { PlayerService } from '../../services/player/player.service';
   templateUrl: './player-controls.component.html',
   styleUrls: ['./player-controls.component.scss']
 })
-export class PlayerControlsComponent implements OnInit, OnDestroy {
-    componentDestroyed = new Subject();
-    isPlaying: boolean;
+export class PlayerControlsComponent {
 
-    constructor(private playerService: PlayerService) {
-    }
-
-    ngOnInit() {
-        this.playerService.togglePlay.pipe(takeUntil(this.componentDestroyed))
-            .subscribe(isPlaying => this.isPlaying = isPlaying);
-    }
-
-    ngOnDestroy() {
-        this.componentDestroyed.next();
-        this.componentDestroyed.complete();
+    constructor(public playerService: PlayerService) {
     }
 
     onTogglePlay() {
-        this.playerService.togglePlay.next(!this.isPlaying);
+        this.playerService.togglePlay(!this.playerService.playControl.active);
+    }
+
+    onNextTrack() {
+        if (!this.playerService.nextTrackControl.disabled) {
+            this.playerService.nextTrack();
+        }
+    }
+
+    onPreviousTrack() {
+        if (!this.playerService.previousTrackControl.disabled) {
+            this.playerService.previousTrack();
+        }
     }
 }

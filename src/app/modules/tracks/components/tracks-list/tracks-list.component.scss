@@ -29,21 +29,17 @@ $position-types: (
 .position {
     text-align: center;
     width: 24px;
-
-    &:hover {
-        @include switch-position-type(map-get($position-types, play));
-    }
 }
 
 .row {
     cursor: pointer;
 
     &:hover, &:focus {
-        background-color: mat-color(map-get($theme, primary), 500, 0.3);
+        @include switch-position-type(map-get($position-types, play));
     }
 
-    &.active {
-        background-color: mat-color(map-get($theme, primary), 400, 0.7);   
+    &:hover, &:focus, &.active {
+        background-color: mat-color(map-get($theme, primary), 500, 0.3);
     }
 
     &.is-playing {

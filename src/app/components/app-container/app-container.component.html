@@ -2,10 +2,10 @@
     <mat-sidenav #sidenav mode="over" class="sidenav">
         Sidenav content
     </mat-sidenav>
-    <main class="content" [class.is-player-active]="activeTrack | async">
+    <main class="content" [class.is-player-active]="activeTrack">
         <router-outlet></router-outlet>
     </main>
     <footer>
-        <prp-player *ngIf="activeTrack | async" class="player"></prp-player>
+        <prp-player *ngIf="activeTrack" class="player"></prp-player>
     </footer>
 </mat-sidenav-container> 

@@ -1,0 +1,14 @@
+.volume {
+    margin-right: 5px;
+    cursor: pointer;
+    fill: #fff;;
+
+    &:hover {
+        fill: darken(#fff, 20%);
+    }
+}
+
+.container {
+    display: flex;
+    align-items: center;
+}

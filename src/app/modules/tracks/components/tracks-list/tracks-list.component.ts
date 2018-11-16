@@ -20,19 +20,19 @@ export class TracksListComponent {
     @Input()
     isPlaying: boolean;
 
-    constructor(private playerService: PlayerService) {
+    constructor(public playerService: PlayerService) {
     }
 
     onTrackChanged(track: Track): void {
-        this.playerService.activeTrack.next(this.activeTrack && this.activeTrack.id === track.id ? null : track);
+        this.activeTrack && this.activeTrack.id === track.id ? this.playerService.deactivateTrack() : this.playerService.changeTrack(track);
     }
 
     onPlay(track: Track, event: Event): void {
         if (this.activeTrack && track.id === this.activeTrack.id) {
-            this.playerService.togglePlay.next(!this.isPlaying);
+            this.playerService.togglePlay(!this.isPlaying);
         } else {
             this.onTrackChanged(track);
-            this.playerService.togglePlay.next(true);
+            this.playerService.togglePlay(true);
         }
         event.stopPropagation();
     }

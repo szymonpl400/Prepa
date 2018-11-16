@@ -1,0 +1,24 @@
+$album-name-size: 16px;
+
+.container {
+    display: flex;
+}
+
+.name-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 16px;
+}
+
+.album-name, .artists-name {
+    margin: 2px 0;
+}
+
+.album-name {
+    font-size: $album-name-size;
+}
+
+.artists-name {
+    font-size: $album-name-size * 0.8;
+}

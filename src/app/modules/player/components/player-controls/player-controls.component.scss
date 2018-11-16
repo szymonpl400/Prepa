@@ -1,3 +1,7 @@
+@import '~assets/scss/variables';
+@import '~@angular/material/theming';
+
+$control-fill: #fff;
 
 @mixin switch-player($mode) {
     .play {
@@ -21,5 +25,15 @@
 }
 
 .control {
+    fill: $control-fill;
     cursor: pointer;
+
+    &:hover {
+        fill: darken($control-fill, 20%);
+    }
+
+    &.disabled {
+        cursor: default;
+        fill: darken($control-fill, 40%);
+    } 
 }

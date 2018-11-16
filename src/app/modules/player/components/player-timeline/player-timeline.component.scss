@@ -3,6 +3,7 @@
 
 .timeline {
     background-color: mat-color(map-get($theme, background), unselected-chip);
+    cursor: pointer;
 }
 
 .timeline-progress {

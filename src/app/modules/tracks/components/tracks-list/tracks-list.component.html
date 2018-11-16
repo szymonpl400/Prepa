@@ -35,9 +35,7 @@
         *matRowDef="let track; columns: displayedColumns;" 
         class="row" 
         tabindex="0"
-        [class.active]="track === activeTrack"
-        [class.is-playing]="isPlaying && track === activeTrack"
-        (keyup.enter)="onTrackChanged(track)"
-        (click)="onTrackChanged(track)">
+        [class.active]="track === playerService.activeTrack"
+        [class.is-playing]="isPlaying && track === playerService.activeTrack">
     </tr>
 </table>

@@ -7,8 +7,16 @@
     height: map-get($page-size, toolbar);
 }
 
+.app-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    margin-left: 5px;
+    padding: 0 5px;
+}
+
 .app-name {
     font-family: 'Chela One', cursive;
-    margin-left: 10px;
     margin-right: 3px;
+    color: #fff;
 }

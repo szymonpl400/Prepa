@@ -1,5 +1,7 @@
 import { Image  } from './image';
 import { Artist } from './artist';
+import { Track } from './track';
+import { Paging } from './paging';
 
 export interface Album {
     album_type: string;
@@ -11,4 +13,9 @@ export interface Album {
     name: string;
     type: string;
     uri: string;
+}
+
+
+export interface AlbumFull extends Album {
+    tracks: Paging<Track>;
 }

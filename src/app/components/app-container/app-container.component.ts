@@ -1,7 +1,6 @@
 import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { MatSidenav } from '@angular/material';
-import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 import { NavigationManagerService, Track } from '../../modules/shared/shared.module';
 import { PlayerService } from '../../modules/player/player.module';
@@ -13,7 +12,10 @@ import { PlayerService } from '../../modules/player/player.module';
 })
 export class AppContainerComponent implements OnInit, OnDestroy {
     componentDestroyed = new Subject();
-    activeTrack: Observable<Track>;
+
+    get activeTrack(): Track {
+        return this.playerService.activeTrack;
+    }
 
     @ViewChild('sidenav')
     sidenav: MatSidenav;
@@ -24,7 +26,6 @@ export class AppContainerComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.navigationManager.toggle.subscribe(() => this.sidenav.toggle());
-        this.activeTrack = this.playerService.activeTrack.pipe(takeUntil(this.componentDestroyed));
     }
 
     ngOnDestroy() {

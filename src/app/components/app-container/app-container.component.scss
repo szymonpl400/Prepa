@@ -25,9 +25,5 @@ $default-content-size: 100vh - #{map-get($page-size, toolbar)};
 }
 
 .player {
-    position: absolute;
-    bottom: 0;
-    height: map-get($page-size, footer);
-    width: 100%;
     z-index: 2;
 }

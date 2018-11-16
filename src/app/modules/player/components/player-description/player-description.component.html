@@ -1,4 +1,7 @@
-<h6>
-    {{ track.name }}
-    <small>{{ track.artists | artistsNameBySeparator: ', ' }}</small>
-</h6>
+<div class="container">
+    <img [src]="album.images[2].url" />
+    <div class="name-container">
+        <div class="album-name">{{ track.name }}</div>
+        <div class="artists-name">{{ track.artists | artistsNameBySeparator: ', ' }}</div>
+    </div>
+</div>

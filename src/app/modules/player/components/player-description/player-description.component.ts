@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Track } from '../../../shared/shared.module';
+import { Track, Album } from '../../../shared/shared.module';
 
 @Component({
   selector: 'prp-player-description',
@@ -7,7 +7,9 @@ import { Track } from '../../../shared/shared.module';
   styleUrls: ['./player-description.component.scss']
 })
 export class PlayerDescriptionComponent {
-
     @Input()
     track: Track;
+
+    @Input()
+    album: Album;
 }
