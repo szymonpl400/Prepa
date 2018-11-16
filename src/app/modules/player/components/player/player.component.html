@@ -1,4 +1,4 @@
-<audio controls (ended)="onAudioEnded($event)" class="audio" #audio>
+<audio controls (ended)="onAudioEnded()" class="audio" #audio>
     <source [src]="playerService.activeTrack.preview_url" type="audio/mp3">
 </audio>
 <prp-player-timeline [progress]="(time / duration) * 100" (timelineClick)="onTimelineClick($event)"></prp-player-timeline>
